@@ -8,8 +8,8 @@ public interface ICategoryService
     IEnumerable<Category> GetAll();
     Category? GetById(long id);
     Category Create(Category category);
-    void Update(int id, Category category);
-    void Delete(int id);
+    Category Update(Category category);
+    void Delete(long id);
 }
 
 public class CategoryService : ICategoryService
@@ -38,13 +38,18 @@ public class CategoryService : ICategoryService
         return category;
     }
 
-    public void Update(int id, Category category)
+    public Category Update(Category category)
     {
-        throw new NotImplementedException();
+        _dataContext.ChangeTracker.Clear();
+        _dataContext.Categories.Update(category);
+        _dataContext.SaveChanges();
+        return category;
     }
 
-    public void Delete(int id)
+    public void Delete(long id)
     {
-        throw new NotImplementedException();
+        var category = _dataContext.Find<Category>(id);
+        _dataContext.Categories.Remove(category);
+        _dataContext.SaveChanges();
     }
 }

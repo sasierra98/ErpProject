@@ -39,4 +39,22 @@ public class CategoryController : ControllerBase
         var categoryPost = _categoryService.Create(category);
         return Created(Uri, categoryPost);
     }
+
+    [HttpPut("{id:long}")]
+    public IActionResult Put(long id, Category category)
+    {
+        var categoryPut = _categoryService.GetById(id);
+        if (categoryPut == null) return BadRequest("Category not found"); 
+        _categoryService.Update(category);
+        return Ok("Category Updated");
+    }
+
+    [HttpDelete]
+    public IActionResult Delete(long id)
+    {
+        var categoryDelete = _categoryService.GetById(id);
+        if (categoryDelete == null) return BadRequest("Category not found"); 
+        _categoryService.Delete(id);
+        return NoContent();
+    }
 }
